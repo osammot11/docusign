@@ -1,0 +1,11 @@
+[Unit]
+Description=Docusign Laravel scheduler
+After=postgresql.service
+
+[Service]
+Type=oneshot
+User=deploy
+Group=www-data
+WorkingDirectory=/var/www/docusign
+ExecStart=/var/www/docusign/bin/php artisan schedule:run
+UMask=0077

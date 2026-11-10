@@ -1,0 +1,16 @@
+[Unit]
+Description=Docusign Laravel queue worker
+After=network.target postgresql.service
+
+[Service]
+User=deploy
+Group=www-data
+WorkingDirectory=/var/www/docusign
+ExecStart=/var/www/docusign/bin/php artisan queue:work --sleep=3 --tries=3 --timeout=180 --max-time=3600
+Restart=always
+RestartSec=5
+UMask=0077
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target

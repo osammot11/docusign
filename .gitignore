@@ -3,6 +3,11 @@
 .env
 .env.backup
 .env.production
+.env.*
+!.env.example
+/.runtime
+/bin/php
+/ops/rclone/*.conf
 .phpactor.json
 .phpunit.result.cache
 /.codex

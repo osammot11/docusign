@@ -1,0 +1,15 @@
+[Unit]
+Description=Docusign dedicated PHP-FPM
+After=network.target postgresql.service
+
+[Service]
+Type=simple
+Environment=PHPRC=/var/www/docusign/.runtime/php.ini
+Environment=PHP_INI_SCAN_DIR=/var/www/docusign/.runtime/conf.d
+ExecStart=/var/www/docusign/.runtime/usr/sbin/php-fpm8.4 --nodaemonize --fpm-config /etc/docusign/fpm.conf
+Restart=on-failure
+RestartSec=5
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target

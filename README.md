@@ -33,6 +33,10 @@ Impostare `ADMIN_EMAIL` e `ADMIN_PASSWORD` prima del seed. Al primo accesso vien
 
 ## Deploy sulla VPS IONOS
 
+Il deploy attuale su `https://docusign.produceavalue.com` è **nativo, senza container**, con utente `deploy`, Nginx e runtime PHP dedicato. Configurazioni e comandi sono in [ops/native/README.md](ops/native/README.md). Su questa VPS condivisa seguire quella procedura.
+
+### Alternativa Docker per una VPS dedicata
+
 1. Verificare almeno 2 vCPU, 2 GB RAM, 20 GB liberi, Ubuntu/Debian aggiornato e porte 80/443 aperte.
 2. Creare il record DNS `A`/`AAAA` di `sign.produceavalue.com` verso la VPS.
 3. Installare Docker Engine e il plugin Compose seguendo la documentazione Docker per il sistema operativo della VPS.
