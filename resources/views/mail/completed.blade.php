@@ -1,0 +1,1 @@
+<h1>Contratto completato</h1><p>Il processo relativo a <strong>{{ $contract->title }}</strong> è terminato. In allegato trovi il fascicolo con documento, certificato, manifest firmato e audit.</p><p>Codice di verifica: <strong>{{ $contract->public_id }}</strong>.</p>

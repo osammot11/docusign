@@ -1,0 +1,57 @@
+services:
+  caddy:
+    build:
+      context: .
+      dockerfile: docker/Caddy.Dockerfile
+    restart: unless-stopped
+    environment:
+      APP_DOMAIN: ${APP_DOMAIN:-sign.produceavalue.com}
+      CADDY_ACME_EMAIL: ${CADDY_ACME_EMAIL}
+    ports: ["80:80", "443:443", "443:443/udp"]
+    volumes:
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on: [app]
+  app: &app
+    build: .
+    restart: unless-stopped
+    env_file: .env
+    volumes:
+      - app_storage:/var/www/html/storage
+    depends_on:
+      db: { condition: service_healthy }
+  worker:
+    <<: *app
+    command: php artisan queue:work --sleep=3 --tries=3 --timeout=180 --max-time=3600
+  scheduler:
+    <<: *app
+    command: php artisan schedule:work
+  db:
+    image: postgres:18.4-bookworm
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${DB_DATABASE}
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USERNAME} -d ${DB_DATABASE}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+  backup:
+    build:
+      context: .
+      dockerfile: docker/backup.Dockerfile
+    profiles: ["ops"]
+    env_file: .env
+    volumes:
+      - app_storage:/data/storage:ro
+      - ./ops/rclone:/root/.config/rclone:ro
+    depends_on: [db]
+volumes:
+  postgres_data:
+  app_storage:
+  caddy_data:
+  caddy_config:

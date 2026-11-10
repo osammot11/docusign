@@ -1,0 +1,16 @@
+{
+    email {$CADDY_ACME_EMAIL}
+}
+{$APP_DOMAIN:sign.produceavalue.com} {
+    root * /srv/public
+    encode zstd gzip
+    log_skip /sign/*
+    @static path /css/* /favicon.ico /robots.txt
+    handle @static { file_server }
+    handle { php_fastcgi app:9000 { root /var/www/html/public } }
+    header {
+        -Server
+        Strict-Transport-Security "max-age=31536000; includeSubDomains"
+    }
+    log { output stdout format json }
+}

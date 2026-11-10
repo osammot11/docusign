@@ -1,0 +1,1 @@
+<h1>Codice di conferma</h1><p>Il codice per confermare <strong>{{ $contract->title }}</strong> è:</p><p style="font-size:30px;letter-spacing:8px"><strong>{{ $code }}</strong></p><p>Scade tra 10 minuti. Non comunicarlo a nessuno.</p>

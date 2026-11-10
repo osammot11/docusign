@@ -1,0 +1,8 @@
+.git
+.env
+node_modules
+vendor
+storage/logs/*
+storage/app/private/*
+work
+outputs
